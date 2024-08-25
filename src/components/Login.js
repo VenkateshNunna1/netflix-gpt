@@ -1,11 +1,71 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Header from "./Header";
+import { validation } from "../utils/validation";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../utils/firebase";
 
 const Login = () => {
-  const [isSignIn, setIsSignIn] = useState(true);
+  const [isSignIn, setIsSignIn] = useState(false);
+  const email = useRef(null);
+  const password = useRef(null);
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const handleSignIn = () => {
     return setIsSignIn(!isSignIn);
   };
+  const handleSubmit = () => {
+    const emailMsg = validation.emailValidation(email.current.value);
+    const passwordMsg = validation.passwordValidation(password.current.value);
+    console.log(emailMsg);
+    console.log(passwordMsg);
+    setEmailError(emailMsg);
+    setPasswordError(passwordMsg);
+    if (emailMsg && passwordMsg) {
+      console.log("ganesh");
+      return;
+    }
+    if (isSignIn) {
+      console.log("hello", isSignIn);
+      console.log("venkatesh");
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          console.log(user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode + " " + errorMessage);
+        });
+    } else {
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+
+          const user = userCredential.user;
+          console.log(user);
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode + " " + errorMessage);
+        });
+    }
+  };
+
   return (
     <div>
       <Header></Header>
@@ -19,15 +79,20 @@ const Login = () => {
         />
       </div>
       <div className="flex justify-center">
-        <form className="w-[400px] h-[540px] bg-black bg-opacity-80 absolute  py-8 px-10   mt-20 rounded-md ">
-          <h1 class="text-white text-4xl font-bold opacity-100">
+        <form
+          className="w-[400px] h-[540px] bg-black bg-opacity-80 absolute  py-8 px-10   mt-20 rounded-md"
+          onSubmit={(event) => {
+            return event.preventDefault();
+          }}
+        >
+          <h1 className="text-white text-4xl font-bold opacity-100">
             {isSignIn ? "Sign Up" : "Sign In"}
           </h1>
           {isSignIn ? (
             <input
               type="text"
               placeholder="Name"
-              class="w-full px-2 py-3 mt-10 mb-2 rounded-sm bg-black bg-opacity-10 border border-gray-500 text-white"
+              className="w-full px-2 py-3 mt-10 mb-2 rounded-sm bg-black bg-opacity-10 border border-gray-500 text-white"
             />
           ) : (
             ""
@@ -36,31 +101,47 @@ const Login = () => {
           <input
             type="text"
             placeholder="Email or Mobile Number"
+            ref={email}
             className={
               isSignIn
                 ? "my-2  w-full px-2 py-3  rounded-sm bg-black bg-opacity-10 border border-gray-500 text-white"
                 : "mt-10 mb-2 w-full px-2 py-3  rounded-sm bg-black bg-opacity-10 border border-gray-500 text-white"
             }
+            onChange={() => {
+              const emailMsg = validation.emailValidation(email.current.value);
+              setEmailError(emailMsg);
+            }}
           />
+          <p className="text-red-600">{emailError}</p>
+
           <input
             type="password"
+            ref={password}
             placeholder="Password"
-            class="w-full px-2 py-3 mt-2 mb-3 rounded-sm  bg-black bg-opacity-10 border border-gray-500 text-white"
+            className="w-full px-2 py-3 mt-2 mb-2 rounded-sm  bg-black bg-opacity-10 border border-gray-500 text-white"
+            onChange={() => {
+              const passwordMsg = validation.passwordValidation(
+                password.current.value
+              );
+              setPasswordError(passwordMsg);
+            }}
           />
-          {isSignIn ? (
+          <p className="text-red-600">{passwordError}</p>
+          {isSignIn && (
             <input
               type="password"
               placeholder="Confirm Password"
-              class="w-full px-2 py-3 mt-2 mb-3 rounded-sm  bg-black bg-opacity-10 border border-gray-500 text-white"
+              className="w-full px-2 py-3 mt-2 mb-3 rounded-sm  bg-black bg-opacity-10 border border-gray-500 text-white"
             />
-          ) : (
-            ""
           )}
 
-          <button className="bg-red-700 w-full p-2 text-white font-semibold rounded-sm">
-            Sign In
+          <button
+            className="bg-red-700 w-full p-2 text-white font-semibold rounded-sm"
+            onClick={handleSubmit}
+          >
+            {isSignIn ? "Sign up " : "Sign in "}
           </button>
-          <h1 class="text-white my-10 cursor-pointer">
+          <h1 className="text-white my-10 cursor-pointer">
             {isSignIn ? "Existing User ? " : "New to Netflix ? "}
             <span
               className="text-gray-600 text-md hover:text-red-700"
