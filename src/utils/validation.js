@@ -1,4 +1,11 @@
 export const validation = {
+  nameValidation: (name) => {
+    let nameError = null;
+    if (!name) {
+      nameError = "Name is required.";
+    }
+    return nameError;
+  },
   emailValidation: (email) => {
     let errors = null;
     // Check if email is empty

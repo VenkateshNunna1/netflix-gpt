@@ -1,12 +1,32 @@
-import React from "react";
-import Body from "./components/Body";
+import React, { useEffect } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Login from "./components/Login";
+import Browse from "./components/Browse";
+import { Provider } from "react-redux";
+import AppStore from "./utils/AppStore";
 
-const App = () => {
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Login />,
+  },
+  {
+    path: "/Browse",
+    element: <Browse />,
+  },
+]);
+
+const Body = () => {
+  useEffect(() => {
+    console.log("venky gani");
+  }, []);
   return (
     <div>
-      <Body></Body>
+      <Provider store={AppStore}>
+        <RouterProvider router={router}></RouterProvider>
+      </Provider>
     </div>
   );
 };
 
-export default App;
+export default Body;

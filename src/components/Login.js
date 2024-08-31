@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Header from "./Header";
 import { validation } from "../utils/validation";
 import {
@@ -16,6 +16,10 @@ const Login = () => {
   const handleSignIn = () => {
     return setIsSignIn(!isSignIn);
   };
+  useEffect(() => {
+    console.log("venky");
+    return console.log("rey");
+  });
   const handleSubmit = () => {
     const emailMsg = validation.emailValidation(email.current.value);
     const passwordMsg = validation.passwordValidation(password.current.value);
