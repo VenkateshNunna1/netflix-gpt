@@ -48,7 +48,7 @@ const Header = () => {
         console.log("venkatesh");
       }
     });
-  }, []);
+  }, [dispatch, navigate]);
   return (
     <div className="flex justify-between absolute z-10">
       <div>
