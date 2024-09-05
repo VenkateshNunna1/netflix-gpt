@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./components/Login";
 import Browse from "./components/Browse";
@@ -17,9 +17,6 @@ const router = createBrowserRouter([
 ]);
 
 const Body = () => {
-  useEffect(() => {
-    console.log("venky gani");
-  }, []);
   return (
     <div>
       <Provider store={AppStore}>

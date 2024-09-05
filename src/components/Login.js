@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Header from "./Header";
 import { validation } from "../utils/validation";
 import {
@@ -9,25 +9,27 @@ import { auth } from "../utils/firebase";
 
 const Login = () => {
   const [isSignIn, setIsSignIn] = useState(false);
-  const email = useRef(null);
-  const password = useRef(null);
+  const email = useRef("");
+  const password = useRef("");
+  const name = useRef("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [nameError, setNameError] = useState("");
   const handleSignIn = () => {
     return setIsSignIn(!isSignIn);
   };
-  useEffect(() => {
-    console.log("venky");
-    return console.log("rey");
-  });
+
   const handleSubmit = () => {
     const emailMsg = validation.emailValidation(email.current.value);
     const passwordMsg = validation.passwordValidation(password.current.value);
+    const nameMsg = validation.nameValidation(name.current.value);
     console.log(emailMsg);
     console.log(passwordMsg);
+    console.log(nameMsg);
     setEmailError(emailMsg);
     setPasswordError(passwordMsg);
-    if (emailMsg && passwordMsg) {
+    setNameError(nameMsg);
+    if (emailMsg && passwordMsg && nameMsg) {
       console.log("ganesh");
       return;
     }
@@ -41,8 +43,6 @@ const Login = () => {
       )
         .then((userCredential) => {
           // Signed up
-          const user = userCredential.user;
-          console.log(user);
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -57,9 +57,6 @@ const Login = () => {
       )
         .then((userCredential) => {
           // Signed in
-
-          const user = userCredential.user;
-          console.log(user);
           // ...
         })
         .catch((error) => {
@@ -93,11 +90,19 @@ const Login = () => {
             {isSignIn ? "Sign Up" : "Sign In"}
           </h1>
           {isSignIn ? (
-            <input
-              type="text"
-              placeholder="Name"
-              className="w-full px-2 py-3 mt-10 mb-2 rounded-sm bg-black bg-opacity-10 border border-gray-500 text-white"
-            />
+            <>
+              <input
+                type="text"
+                placeholder="Name"
+                className="w-full px-2 py-3 mt-10 mb-2 rounded-sm bg-black bg-opacity-10 border border-gray-500 text-white"
+                ref={name}
+                onChange={() => {
+                  const nameMsg = validation.nameValidation(name.current.value);
+                  setNameError(nameMsg);
+                }}
+              />
+              <p className="text-red-600">{nameError}</p>
+            </>
           ) : (
             ""
           )}
@@ -131,13 +136,13 @@ const Login = () => {
             }}
           />
           <p className="text-red-600">{passwordError}</p>
-          {isSignIn && (
+          {/* {isSignIn && (
             <input
               type="password"
               placeholder="Confirm Password"
               className="w-full px-2 py-3 mt-2 mb-3 rounded-sm  bg-black bg-opacity-10 border border-gray-500 text-white"
             />
-          )}
+          )} */}
 
           <button
             className="bg-red-700 w-full p-2 text-white font-semibold rounded-sm"
