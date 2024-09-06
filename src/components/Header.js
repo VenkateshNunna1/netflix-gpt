@@ -50,20 +50,20 @@ const Header = () => {
     });
   }, [dispatch, navigate]);
   return (
-    <div className="flex justify-between absolute z-10">
+    <div className="flex justify-between">
       <div>
         <img
           src={
             "https://cdn.cookielaw.org/logos/dd6b162f-1a32-456a-9cfe-897231c7763c/4345ea78-053c-46d2-b11e-09adaef973dc/Netflix_Logo_PMS.png"
           }
           alt="logo"
-          className="sm:w-44 w-36 sm:mx-14 mx-0   "
+          className="sm:w-44 w-36 sm:mx-14 mx-0 absolute z-10   "
         />
       </div>
       {user?.email && (
         <div>
           <button
-            className="p-2 m-2 bg-red-600 text-white ml-[1300px]"
+            className="sm:p-2 p-1 sm:m-2 m-1 bg-red-600 text-white "
             onClick={handleSignout}
           >
             Signout
