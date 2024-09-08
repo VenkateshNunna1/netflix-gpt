@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { addUser, removeUser } from "../utils/UserSlice";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../utils/firebase";
+import { HeaderIconUrl } from "../utils/constants";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const Header = () => {
     console.log("venkatesh");
   };
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    const unSubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/auth.user
@@ -48,14 +49,13 @@ const Header = () => {
         console.log("venkatesh");
       }
     });
+    return () => unSubscribe;
   }, [dispatch, navigate]);
   return (
     <div className="flex justify-between">
       <div>
         <img
-          src={
-            "https://cdn.cookielaw.org/logos/dd6b162f-1a32-456a-9cfe-897231c7763c/4345ea78-053c-46d2-b11e-09adaef973dc/Netflix_Logo_PMS.png"
-          }
+          src={HeaderIconUrl}
           alt="logo"
           className="sm:w-44 w-36 sm:mx-14 mx-0 absolute z-10   "
         />
