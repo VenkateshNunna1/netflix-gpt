@@ -52,18 +52,18 @@ const Header = () => {
     return () => unSubscribe;
   }, [dispatch, navigate]);
   return (
-    <div className="flex justify-between">
+    <div className="flex  justify-between w-full  absolute z-20  ">
       <div>
         <img
           src={HeaderIconUrl}
           alt="logo"
-          className="sm:w-44 w-36 sm:mx-14 mx-0 absolute z-10   "
+          className="sm:w-44 w-36 sm:mx-14 mx-0   "
         />
       </div>
       {user?.email && (
         <div>
           <button
-            className="sm:p-2 p-1 sm:m-2 m-1 bg-red-600 text-white "
+            className="sm:p-2 p-1 sm:m-2 m-0 bg-red-600 text-white rounded-lg "
             onClick={handleSignout}
           >
             Signout
