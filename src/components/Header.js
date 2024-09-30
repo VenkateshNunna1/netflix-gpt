@@ -10,8 +10,7 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user.user);
-  console.log(user);
-  console.log(user?.email);
+
   const handleSignout = () => {
     signOut(auth)
       .then(() => {
@@ -30,10 +29,9 @@ const Header = () => {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/auth.user
         // ...
-        console.log(user);
 
         const { uid, email } = user;
-        console.log(uid, email);
+
         dispatch(
           addUser({
             uid: uid,
@@ -52,7 +50,7 @@ const Header = () => {
     return () => unSubscribe;
   }, [dispatch, navigate]);
   return (
-    <div className="flex  justify-between w-full  absolute z-20  ">
+    <div className="flex  justify-between w-full  absolute z-20 bg-gradient-to-b from-black   ">
       <div>
         <img
           src={HeaderIconUrl}
